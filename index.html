@@ -1,0 +1,238 @@
+<html>
+
+<head>
+    <TITLE> Result Management System</TITLE>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+</head>
+
+<body ng-app="myApp" ng-controller="myController">
+    <div class="container">
+
+        <div class="row">
+            <hr>
+            <div class="col-md-8">
+                <strong>All Student Results</strong>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#add">Add Student</button>
+            </div>
+            <span class="clearfix"></span>
+            <hr>
+        </div>
+        <div class="alert alert-info" ng-if="message">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> Student Added Successfully !
+        </div>
+        <button type="button" class="btn btn-primary" ng-click="sortBy(null)">Set To Unsorted</button>
+        <div class="row">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            <button ng-click="sortBy('ID')">ID</button>
+                            <span class="sortorder" ng-show="propertyName === 'ID'"></span>
+                        </th>
+                        <th>
+                            <button ng-click="sortBy('FNAME')">First Name</button>
+                            <span class="sortorder" ng-show="propertyName === 'FNAME'"></span>
+                        </th>
+                        <th>
+                            <button ng-click="sortBy('LNAME')">Last Name</button>
+                            <span class="sortorder" ng-show="propertyName === 'LNAME'"></span>
+                        </th>
+                        <th>
+                            <button ng-click="sortBy('MATH')">Maths</button>
+                            <span class="sortorder" ng-show="propertyName === 'MATH'"></span>
+                        </th>
+                        <th>
+                            <button ng-click="sortBy('SCI')">Science</button>
+                            <span class="sortorder" ng-show="propertyName === 'SCI'"></span>
+                        </th>
+                        <th>
+                            <button ng-click="sortBy('ENG')">English</button>
+                            <span class="sortorder" ng-show="propertyName === 'ENG'"></span>
+                        </th>
+                        <th>
+                            <button ng-click="sortBy('TOT')">Total Marks</button>
+                            <span class="sortorder" ng-show="propertyName === 'TOT' "></span>
+                        </th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    <tr>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="user in users | orderBy:propertyName">
+                        <td>{{user.ID}}</td>
+                        <td>{{user.FNAME}}</td>
+                        <td>{{user.LNAME}}</td>
+                        <td>{{user.MATH}}</td>
+                        <td>{{user.SCI}}</td>
+                        <td>{{user.ENG}}</td>
+                        <td>{{user.MATH + user.SCI + user.ENG}}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit" ng-click="selectUser(user)">Edit</button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete" ng-click="selectUser(user)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal fade" id="add" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">ADD STUDENT RESULT DETAIL</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="name">ID</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="cid" id="id_id" placeholder="Enter ID" ng-model="newUser.ID">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="name">First Name</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="cfname" id="fname_id" placeholder="Enter First Name" ng-model="newUser.FNAME">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="name">Last Name:</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="clname" id="lname_id" placeholder="Enter Last Name" ng-model="newUser.LNAME">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="age">Maths:</label>
+                            <div class="col-sm-7">
+                                <input type="number" class="form-control" name="cmath" id="math_id" placeholder="Enter Maths Marks" ng-model=newUser.MATH>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="age">Science:</label>
+                            <div class="col-sm-7">
+                                <input type="number" class="form-control" name="csci" id="sci_id" placeholder="Enter Science Marks" ng-model=newUser.SCI>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="age">English:</label>
+                            <div class="col-sm-7">
+                                <input type="number" class="form-control" name="ceng" id="eng_id" placeholder="Enter English Marks" ng-model=newUser.ENG>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-info" ng-click="saveUser()" data-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="edit" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">EDIT STUDENT'S RESULT</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="name">ID</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="cID" id="ID_id" placeholder="Enter ID" ng-model="clickedUser.ID">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="name">First Name</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="cfname" id="fname_id" placeholder="Enter First Name" ng-model="clickedUser.FNAME">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="name">Last Name:</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="clname" id="lname_id" placeholder="Enter Last Name" ng-model="clickedUser.LNAME">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="age">Maths:</label>
+                            <div class="col-sm-7">
+                                <input type="number" class="form-control" name="cmath" id="math_id" placeholder="Enter Maths Marks" ng-model="clickedUser.MATH">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="age">Science:</label>
+                            <div class="col-sm-7">
+                                <input type="number" class="form-control" name="csci" id="sci_id" placeholder="Enter Science Marks" ng-model="clickedUser.SCI">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="age">English:</label>
+                            <div class="col-sm-7">
+                                <input type="number" class="form-control" name="ceng" id="eng_id" placeholder="Enter English Marks" ng-model="clickedUser.ENG">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-info" ng-click="updateUser(user)" data-dismiss="modal">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="delete" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">DELETE STUDENT</h4>
+                </div>
+                <div class="modal-body">
+                    <span>Do You Want To Delete This Student Permanently ?</span><br>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="deleteUser()">Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
